@@ -1,82 +1,153 @@
-import Head from 'next/head'
+// import Head from 'next/head'
+import { useEffect, useState } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars'
 
-export default function Home() {
+import { CreateCandidateModal, CreateElectionModal, Election, ElectionCard } from '../components'
+import storage from '../lib/localstorage'
+
+// import { User } from 'react-feather'
+export default function Home({
+  account,
+  getElectionById,
+  loadElection,
+  createNewElection,
+  addElectionCandidate,
+  sendContractWithParams,
+  getReturnValue,
+}) {
+  const [electionInput, updateElectionInput] = useState("")
+  const [elections, updateElections] = useState({})
+  const [selectedElection, updateSelectedElection] = useState(null)
+  const [lastAddedCandidate, updateLastAddedCandidate] = useState(null)
+
+  // modal visibility states
+  const [showElectionModal, updateElectionModal] = useState(false)
+  const [showNewCandidateModal, updateShowNewCandidateModal] = useState(false)
+
+  const fetchElectionById = async (id) => {
+    const election = await getElectionById(id)
+    return election
+  }
+
+  const loadElectionById = async (id) => {
+    const election = await getElectionById(id)
+    storage.add(id)
+    updateElections({ [id]: election, ...elections })
+  }
+
+  const handleElectionSearch = async (e) => {
+    e.preventDefault()
+    await loadElectionById(electionInput)
+    updateElectionInput("")
+  }
+
+  const createElection = async (params) => {
+    const elResponse = await createNewElection(params)
+    const { id } = await getReturnValue(elResponse)
+    await loadElectionById(id)
+    updateSelectedElection(id)
+  }
+
+  const addNewCandidate = async ({ name, party, manifesto }) => {
+    const elRes = await addElectionCandidate(selectedElection, {
+      name,
+      party,
+      manifesto,
+    })
+    const { id } = await getReturnValue(elRes)
+    updateLastAddedCandidate(id)
+  }
+
+  useEffect(async () => {
+    // get saved elections from localstorage
+    if (account.length > 0) {
+      const savedElections = storage.getAll()
+      const allSavedElectionsData = (
+        await Promise.all(
+          savedElections.map(async (id) => await fetchElectionById(id))
+        )
+      )
+        .reverse()
+        .reduce((acc, i) => {
+          acc[i._id] = i
+          return acc
+        }, {})
+      updateElections(allSavedElectionsData)
+      savedElections.length > 0 &&
+        updateSelectedElection(savedElections[savedElections.length - 1])
+    }
+  }, [account])
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <>
+      <div className="container self-center">
+        <div className="flex flex-row w-full h-full py-2 text-base">
+          <div className="w-1/4 h-full border-r p-2 flex flex-col justify-between">
+            <div className="w-full">
+              <div className="w-full mb-2">
+                <form onSubmit={handleElectionSearch} className="flex flex-1">
+                  <input
+                    className="flex flex-1 mr-1 rounded p-2 bg-gray-200"
+                    type="text"
+                    value={electionInput}
+                    onChange={(e) => updateElectionInput(e.target.value)}
+                    placeholder="Election ID..."
+                  />
+                  <input
+                    className="rounded p-2 px-3 bg-transparent border-2 border-gray-300 hover:border-gray-500"
+                    type="Submit"
+                    defaultValue="Add"
+                  />
+                </form>
+              </div>
+            </div>
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
-
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+            {/* Election item */}
+            <div className="w-full flex flex-1">
+              <Scrollbars
+                style={{ overflowX: "visible" }}
+                autoHeight
+                autoHeightMin="100%"
+                autoHeightMax={`calc(100vh - 125px)`}
+              >
+                {Object.values(elections).map((electionItem) => (
+                  <ElectionCard
+                    {...electionItem}
+                    key={electionItem._id}
+                    selectElection={updateSelectedElection}
+                  />
+                ))}
+              </Scrollbars>
+            </div>
+            <div className="w-full">
+              <button
+                className="text-sm w-full py-3 rounded flex items-center justify-center border-2 border-gray-300 hover:border-gray-500"
+                onClick={() => updateElectionModal(true)}
+              >
+                Create New Election
+              </button>
+            </div>
+          </div>
+          <div className="flex flex-1 h-full p-2">
+            <Election
+              electionId={selectedElection}
+              lastAddedCandidate={lastAddedCandidate}
+              loadElection={loadElection}
+              addCandidate={() => updateShowNewCandidateModal(true)}
+            />
+          </div>
         </div>
-      </main>
-
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
-    </div>
+      </div>
+      <CreateElectionModal
+        showModal={showElectionModal}
+        closeModal={() => updateElectionModal(false)}
+        createElection={createElection}
+      />
+      <CreateCandidateModal
+        showModal={showNewCandidateModal}
+        closeModal={() => updateShowNewCandidateModal(false)}
+        addNewCandidate={addNewCandidate}
+      />
+    </>
   )
 }

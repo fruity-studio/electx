@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap");
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+html,
+body,
+#__next,
+.container {
+  @apply flex flex-1 flex-col w-full h-full justify-center;
+}
+
+.react-daterange-picker__wrapper {
+  border: 0px !important;
+  @apply w-full p-2 rounded bg-gray-200;
+}
+
+button:disabled,
+button[disabled] {
+  @apply opacity-50;
+}
