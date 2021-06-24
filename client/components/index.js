@@ -1,6 +1,7 @@
 // export { default as DatePicker } from "./DatePicker"
 export { default as Election } from "./Election"
 export { default as ElectionCard } from "./ElectionCard"
+export { default as DatePicker } from "./DatePicker"
 // export { default as Accessmodal } from "./Accessmodal"
 export { default as CreateElectionModal } from "./CreateElectionModal"
 export { default as CreateCandidateModal } from "./CreateCandidateModal"

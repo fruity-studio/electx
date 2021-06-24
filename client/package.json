@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:prod": "next build && next export",
     "start": "next start",
     "link-contracts": "cd lib && ln -s ../../build/contracts contracts"
   },
