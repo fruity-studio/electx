@@ -9,8 +9,8 @@ function CreateElectionModal({ createElection, closeModal }) {
   const handleSubmit = async (values, actions) => {
     const { name, description, pollDates } = values
     const [_start, _end] = pollDates
-    const pollStart = moment(_start).unix()
-    const pollEnd = moment(_end).unix()
+    const pollStart = moment(_start).valueOf()
+    const pollEnd = moment(_end).valueOf()
 
     await createElection({ name, description, pollStart, pollEnd })
     actions.resetForm({
@@ -34,7 +34,7 @@ function CreateElectionModal({ createElection, closeModal }) {
       >
         {(props) => (
           <form className="w-full text-sm" onSubmit={props.handleSubmit}>
-            <div className="flex flex-1 flex-row">
+            <div className="flex flex-1 flex-col">
               <div className="w-full mb-2 flex flex-1 flex-col">
                 <div className="mb-1">
                   <label htmlFor="name">Name</label>

@@ -13,6 +13,8 @@ export default function Home({
   createNewElection,
   addElectionCandidate,
   manageElectionRole,
+  approveRoleRequest,
+  voteElectionCandidate,
   getReturnValue,
 }) {
   const [electionInput, updateElectionInput] = useState("")
@@ -134,6 +136,8 @@ export default function Home({
               lastAddedCandidate={lastAddedCandidate}
               loadElection={loadElection}
               manageElectionRole={manageElectionRole}
+              approveRoleRequest={approveRoleRequest}
+              voteElectionCandidate={voteElectionCandidate}
               addCandidate={() => updateShowNewCandidateModal(true)}
             />
           </div>

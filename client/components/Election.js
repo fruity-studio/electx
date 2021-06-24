@@ -4,6 +4,7 @@ import { Scrollbars } from 'react-custom-scrollbars'
 import { Copy, Grid, UserPlus } from 'react-feather'
 import useClipboard from 'react-use-clipboard'
 
+import timeUtils from '../lib/timeUtils'
 import AccessModal from './AccessModal'
 
 function Election({
@@ -12,17 +13,26 @@ function Election({
   loadElection,
   addCandidate,
   manageElectionRole,
+  approveRoleRequest,
+  voteElectionCandidate,
 }) {
   const [isCopied, setCopied] = useClipboard(electionId)
   const [election, updateElection] = useState({})
   const [candidates, updateCandidates] = useState([])
   const [roles, updateRoles] = useState({})
+  const [voted, updateVoted] = useState(false)
   const [openAccessOptions, updateOpenAccessOptions] = useState(false)
+  const electionIsInProgress = timeUtils.isInProgress(
+    election.pollStart,
+    election.pollEnd
+  )
 
   const refreshElection = async () => {
     const electionInfo = await loadElection(electionId)
+    // console.log(electionInfo)
     updateElection(electionInfo.election)
     updateCandidates(electionInfo.candidates)
+    updateVoted(electionInfo.voted)
     updateRoles({
       role: parseInt(electionInfo.role),
       roleRequest: parseInt(electionInfo.roleRequest.role),
@@ -99,8 +109,11 @@ function Election({
                         {candidate.party}
                       </div>
                       <button
-                        disabled={roles.role < 1}
+                        disabled={roles.role < 1 || !electionIsInProgress}
                         className="px-3 border-2 rounded flex items-center justify-center border-gray-300 hover:border-gray-500"
+                        onClick={() =>
+                          voteElectionCandidate(electionId, candidate.id)
+                        }
                       >
                         Vote
                       </button>
@@ -148,6 +161,8 @@ function Election({
         closeModal={() => updateOpenAccessOptions(false)}
         roles={roles}
         handleRoleRequest={handleRoleRequest}
+        electionId={electionId}
+        approveRoleRequest={approveRoleRequest}
       />
     </div>
   )

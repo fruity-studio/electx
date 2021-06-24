@@ -5,10 +5,16 @@ import { UserCheck, UserPlus, Users } from 'react-feather'
 
 import Modal from './Modal'
 
-function AccessModal({ closeModal, roles, handleRoleRequest }) {
-  console.log(roles)
+function AccessModal({
+  closeModal,
+  roles,
+  handleRoleRequest,
+  electionId,
+  approveRoleRequest,
+}) {
   const { role, roleRequest, requestId } = roles
   const handleSubmit = async (values, actions) => {
+    await approveRoleRequest(electionId, values.request)
     actions.resetForm()
     closeModal()
   }
@@ -32,59 +38,78 @@ function AccessModal({ closeModal, roles, handleRoleRequest }) {
   return (
     <div className="p-4 flex flex-1 flex-col">
       <h2 className="mb-3 font-semibold text-xl">Manage Election Access</h2>
-      {role < 1 && (
-        <div className="mb-3 flex flex-1 flex-col w-full">
-          <h3 className="text-base mb-2">Request Your Access Level:</h3>
-          <div className="grid gap-4 grid-cols-3 w-full text-sm">
-            {/* State Validator */}
-            <div className="border border-dashed rounded flex flex-col items-center justify-center pt-9 pb-3">
-              <Users size={30} />
-              <span>State Validator</span>
-              {(roleRequest === 0 || roleRequest === 3) && (
-                <button
-                  onClick={handleRoleRequest("state", roleRequest === 3)}
-                  className={classnames(
-                    "mt-3 py-1 px-4 border-2 mr-2 self-center border-gray-300 hover:border-gray-500 bg-transparent rounded"
-                  )}
-                >
-                  {roleRequest === 3 ? "Cancel" : "Request"}
-                </button>
-              )}
-            </div>
-            {/* Zone Validator */}
-            <div className="border border-dashed rounded flex flex-col items-center justify-center pt-9 pb-3">
-              <UserPlus size={30} />
-              <span>Zone Validator</span>
-              {(roleRequest === 0 || roleRequest === 2) && (
-                <button
-                  onClick={handleRoleRequest("zone", roleRequest === 2)}
-                  className="mt-3 py-1 px-4 border-2 mr-2 border-gray-300 hover:border-gray-500 bg-transparent rounded"
-                >
-                  {roleRequest === 2 ? "Cancel Request" : "Request"}
-                </button>
-              )}
-            </div>
-            {/* Voter Access */}
-            <div className="border border-dashed rounded flex flex-col items-center justify-center pt-9 pb-3">
-              <UserCheck size={30} />
-              <span>Voter Access</span>
-              {(roleRequest === 0 || roleRequest === 1) && (
-                <button
-                  onClick={handleRoleRequest("voter", roleRequest === 1)}
-                  className="mt-3 py-1 px-4 border-2 mr-2 border-gray-300 hover:border-gray-500 bg-transparent rounded"
-                >
-                  {roleRequest === 1 ? "Cancel Request" : "Request"}
-                </button>
-              )}
-            </div>
+      <div className="mb-3 flex flex-1 flex-col w-full">
+        <h3 className="text-base mb-2">Request Your Access Level:</h3>
+        <div className="grid gap-4 grid-cols-3 w-full text-sm">
+          {/* State Validator */}
+          <div
+            className={classnames(
+              "border border-dashed rounded flex flex-col items-center justify-center pt-9 pb-3",
+              {
+                "opacity-20": role > 0 && role !== 3,
+              }
+            )}
+          >
+            <Users size={30} />
+            <span>State Validator</span>
+            {role < 1 && (roleRequest === 0 || roleRequest === 3) && (
+              <button
+                onClick={handleRoleRequest("state", roleRequest === 3)}
+                className={classnames(
+                  "mt-3 py-1 px-4 border-2 mr-2 self-center border-gray-300 hover:border-gray-500 bg-transparent rounded"
+                )}
+              >
+                {roleRequest === 3 ? "Cancel" : "Request"}
+              </button>
+            )}
           </div>
-          {roleRequest > 0 && (
-            <div className="text-xs p-3 mt-2 flex rounded w-full items-center justify-center bg-gray-50">
-              {requestId}
-            </div>
-          )}
+          {/* Zone Validator */}
+          <div
+            className={classnames(
+              "border border-dashed rounded flex flex-col items-center justify-center pt-9 pb-3",
+              {
+                "opacity-20": role > 0 && role !== 2,
+              }
+            )}
+          >
+            <UserPlus size={30} />
+            <span>Zone Validator</span>
+            {role < 1 && (roleRequest === 0 || roleRequest === 2) && (
+              <button
+                onClick={handleRoleRequest("zone", roleRequest === 2)}
+                className="mt-3 py-1 px-4 border-2 mr-2 border-gray-300 hover:border-gray-500 bg-transparent rounded"
+              >
+                {roleRequest === 2 ? "Cancel Request" : "Request"}
+              </button>
+            )}
+          </div>
+          {/* Voter Access */}
+          <div
+            className={classnames(
+              "border border-dashed rounded flex flex-col items-center justify-center pt-9 pb-3",
+              {
+                "opacity-20": role > 0 && role !== 1,
+              }
+            )}
+          >
+            <UserCheck size={30} />
+            <span>Voter Access</span>
+            {role < 1 && (roleRequest === 0 || roleRequest === 1) && (
+              <button
+                onClick={handleRoleRequest("voter", roleRequest === 1)}
+                className="mt-3 py-1 px-4 border-2 mr-2 border-gray-300 hover:border-gray-500 bg-transparent rounded"
+              >
+                {roleRequest === 1 ? "Cancel Request" : "Request"}
+              </button>
+            )}
+          </div>
         </div>
-      )}
+        {roleRequest > 0 && (
+          <div className="text-xs p-3 mt-2 flex rounded w-full items-center justify-center bg-gray-50">
+            {requestId}
+          </div>
+        )}
+      </div>
       <div className="flex flex-1 flex-col w-full">
         <Formik
           initialValues={{

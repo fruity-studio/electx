@@ -1,9 +1,10 @@
-import DateRangePicker from '@wojtekmaj/react-daterange-picker/dist/entry.nostyle'
+// import DateRangePicker from '@wojtekmaj/react-daterange-picker/dist/entry.nostyle'
+import DateTimeRangePicker from '@wojtekmaj/react-datetimerange-picker/dist/entry.nostyle'
 import React from 'react'
 
 function DatePicker(FieldProps) {
   return (
-    <DateRangePicker
+    <DateTimeRangePicker
       minDate={new Date()}
       className="w-full"
       {...FieldProps.field}

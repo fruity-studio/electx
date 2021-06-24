@@ -1,6 +1,8 @@
 import moment from 'moment'
 import React from 'react'
 
+import timeUtils from '../lib/timeUtils'
+
 function ElectionCard({
   _id,
   name,
@@ -9,16 +11,11 @@ function ElectionCard({
   pollEnd,
   selectElection,
 }) {
-  const now = Date.now() / 1000
-  const formattedPollStart = parseInt(pollStart)
-  const formattedPollEnd = parseInt(pollEnd)
-  const isInFuture = formattedPollStart > now
-  const isCompleted = now > formattedPollEnd
-  const opensIn = isInFuture
-    ? moment.unix(formattedPollStart).fromNow()
-    : isCompleted
-    ? moment.unix(formattedPollEnd).fromNow()
-    : moment().to(moment.unix(formattedPollEnd))
+  const isInFuture = timeUtils.isInFuture(pollStart)
+  const isCompleted = timeUtils.isCompleted(pollEnd)
+  const opensIn = timeUtils.opensIn(pollStart, pollEnd)
+
+  console.log({ pollStart, pollEnd })
 
   return (
     <div

@@ -92,6 +92,13 @@ class web3Helpers {
     }
   }
 
+  approveRoleRequest = async (electionId, requestId) => {
+    return await this.sendContractWithParams("approveRoleRequest", [
+      electionId,
+      requestId,
+    ])
+  }
+
   getCandidates = async (electionId) => {
     // load candidates
     const candidatesList = await this.callContractWithParams(
@@ -133,7 +140,18 @@ class web3Helpers {
       electionId,
     ])
 
-    return { election, candidates, role, roleRequest }
+    const voted = await this.callContractWithParams("userHasVotedForElection", [
+      electionId,
+    ])
+
+    return { election, candidates, role, roleRequest, voted }
+  }
+
+  voteElectionCandidate = async (electionId, candidate) => {
+    return await this.sendContractWithParams("voteElectionCandidate", [
+      electionId,
+      candidate,
+    ])
   }
 }
 

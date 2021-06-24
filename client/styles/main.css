@@ -15,7 +15,8 @@ body,
   @apply flex flex-1 flex-col w-full h-full justify-center;
 }
 
-.react-daterange-picker__wrapper {
+.react-daterange-picker__wrapper,
+.react-datetimerange-picker__wrapper {
   border: 0px !important;
   @apply w-full p-2 rounded bg-gray-200;
 }

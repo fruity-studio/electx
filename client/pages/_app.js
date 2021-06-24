@@ -1,12 +1,14 @@
 import '../styles/main.css'
-import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css'
+import '@wojtekmaj/react-datetimerange-picker/dist/DateTimeRangePicker.css'
 import 'react-calendar/dist/Calendar.css'
+import 'react-clock/dist/Clock.css'
 
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 import web3Helper from '../lib/web3'
 
+// import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css'
 function MyApp({ Component, pageProps }) {
   const [account, updateAccount] = useState("")
   const [connected, updateConnected] = useState(null)
