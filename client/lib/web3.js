@@ -1,7 +1,6 @@
 import Web3 from "web3"
-
-// import VhotaArtifact from './contracts/Vhota.json'
-import VhotaArtifact from "../../build/contracts/Vhota.json"
+import VhotaArtifact from "./contracts/Vhota.json"
+// const VhotaArtifact = require("./contracts/Vhota.json")
 
 class web3Helpers {
   web3 = null

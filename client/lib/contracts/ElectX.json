@@ -1,0 +1,113 @@
+{
+  "contractName": "ElectX",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.0+commit.c7dfd78e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/Users/ghostffcode/Documents/UpkitStudio/vhota/contracts/Vhota.sol\":\"ElectX\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/ghostffcode/Documents/UpkitStudio/vhota/contracts/Vhota.sol\":{\"keccak256\":\"0x883c86af1135d33952d4980a49f7c0426b5db1478d523ab2bbc3d0a38fb139a0\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://1b56bf9023f1686bbf7c9ea02b0ac0e7ad43ec9e1d07535e9c72bf7cb1ec377d\",\"dweb:/ipfs/QmRRF4v6ieAta4Vc9tQswuH4MkXXyNeuu45tckQa3r8TXF\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220119a29dafb096fdc9bd0047c16b17c0238a235968cd93868acaece7e8387595664736f6c63430008000033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220119a29dafb096fdc9bd0047c16b17c0238a235968cd93868acaece7e8387595664736f6c63430008000033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "64:19:1:-:0;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "64:19:1:-:0;;;;;",
+  "source": "// SPDX-License-Identifier: UNLICENSED\npragma solidity ^0.8.0;\n\ncontract ElectX {\n}\n",
+  "sourcePath": "/Users/ghostffcode/Documents/UpkitStudio/vhota/contracts/Vhota.sol",
+  "ast": {
+    "absolutePath": "/Users/ghostffcode/Documents/UpkitStudio/vhota/contracts/Vhota.sol",
+    "exportedSymbols": {
+      "ElectX": [
+        35
+      ]
+    },
+    "id": 36,
+    "license": "UNLICENSED",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 34,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "39:23:1"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 35,
+        "linearizedBaseContracts": [
+          35
+        ],
+        "name": "ElectX",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 36,
+        "src": "64:19:1"
+      }
+    ],
+    "src": "39:45:1"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/ghostffcode/Documents/UpkitStudio/vhota/contracts/Vhota.sol",
+    "exportedSymbols": {
+      "ElectX": [
+        35
+      ]
+    },
+    "id": 36,
+    "license": "UNLICENSED",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 34,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "39:23:1"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 35,
+        "linearizedBaseContracts": [
+          35
+        ],
+        "name": "ElectX",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 36,
+        "src": "64:19:1"
+      }
+    ],
+    "src": "39:45:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.0+commit.c7dfd78e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.1",
+  "updatedAt": "2021-06-15T18:59:47.716Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
