@@ -140,11 +140,12 @@ class web3Helpers {
       electionId,
     ])
 
-    const voted = await this.callContractWithParams("userHasVotedForElection", [
-      electionId,
-    ])
+    const voteStatus = await this.callContractWithParams(
+      "userHasVotedForElection",
+      [electionId]
+    )
 
-    return { election, candidates, role, roleRequest, voted }
+    return { election, candidates, role, roleRequest, voteStatus }
   }
 
   voteElectionCandidate = async (electionId, candidate) => {

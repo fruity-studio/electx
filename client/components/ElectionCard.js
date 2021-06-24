@@ -15,8 +15,6 @@ function ElectionCard({
   const isCompleted = timeUtils.isCompleted(pollEnd)
   const opensIn = timeUtils.opensIn(pollStart, pollEnd)
 
-  console.log({ pollStart, pollEnd })
-
   return (
     <div
       className="w-full rounded shadow p-2 text-sm mb-2 border"

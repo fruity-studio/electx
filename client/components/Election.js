@@ -20,7 +20,7 @@ function Election({
   const [election, updateElection] = useState({})
   const [candidates, updateCandidates] = useState([])
   const [roles, updateRoles] = useState({})
-  const [voted, updateVoted] = useState(false)
+  const [voteStatus, updateVoteStatus] = useState({})
   const [openAccessOptions, updateOpenAccessOptions] = useState(false)
   const electionIsInProgress = timeUtils.isInProgress(
     election.pollStart,
@@ -32,7 +32,7 @@ function Election({
     // console.log(electionInfo)
     updateElection(electionInfo.election)
     updateCandidates(electionInfo.candidates)
-    updateVoted(electionInfo.voted)
+    updateVoteStatus(electionInfo.voteStatus)
     updateRoles({
       role: parseInt(electionInfo.role),
       roleRequest: parseInt(electionInfo.roleRequest.role),
@@ -52,6 +52,8 @@ function Election({
       await refreshElection()
     }
   }, [electionId, lastAddedCandidate])
+
+  // console.log(voteStatus)
 
   const electionIdDisplay = election._id
     ? `#${election._id.substr(0, 6)}...${election._id.substr(-4)}`
@@ -99,7 +101,12 @@ function Election({
                   >
                     <div className="flex flex-col items-center justify-center">
                       <Avatar name={candidate.name} round={true} />
-                      <span className="my-2">{candidate.name}</span>
+                      <div className="flex flex-row items-center justify-center">
+                        <span className="my-2">{candidate.name}</span>
+                        <span className="text-gray-400 text-sm ml-1">
+                          ({candidate.votes} votes)
+                        </span>
+                      </div>
                       <div className="mb-2 text-sm text-gray-300 text-center">
                         {candidate.manifesto}
                       </div>
@@ -109,13 +116,20 @@ function Election({
                         {candidate.party}
                       </div>
                       <button
-                        disabled={roles.role < 1 || !electionIsInProgress}
+                        disabled={
+                          roles.role < 1 ||
+                          !electionIsInProgress ||
+                          voteStatus.voted
+                        }
                         className="px-3 border-2 rounded flex items-center justify-center border-gray-300 hover:border-gray-500"
                         onClick={() =>
                           voteElectionCandidate(electionId, candidate.id)
                         }
                       >
-                        Vote
+                        {voteStatus.voted &&
+                        voteStatus.candidate === candidate.id
+                          ? "Voted"
+                          : "Vote"}
                       </button>
                     </div>
                   </div>
