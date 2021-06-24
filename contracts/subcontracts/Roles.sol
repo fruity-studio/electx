@@ -140,9 +140,9 @@ contract Roles {
     function getRoleRequest(bytes32 electionId)
         public
         view
-        returns (uint256 role)
+        returns (bytes32 id, uint256 role)
     {
-        bytes32 id = _getRequestIdForRole(electionId);
+        id = _getRequestIdForRole(electionId);
         role = uint256(_roleRequests[electionId][id].requestType);
     }
 
@@ -163,7 +163,7 @@ contract Roles {
         });
     }
 
-    function approveValidatorRequest(bytes32 electionId, bytes32 requestId)
+    function approveRoleRequest(bytes32 electionId, bytes32 requestId)
         public
         canValidateRoleRequest(electionId, requestId)
     {
@@ -174,6 +174,7 @@ contract Roles {
             validator: msg.sender,
             role: userRequest.requestType
         });
+        delete _roleRequests[electionId][requestId];
     }
 
     function _getRequestIdForRole(bytes32 electionId)

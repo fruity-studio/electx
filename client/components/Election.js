@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Avatar from 'react-avatar'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { Copy, Grid, UserPlus } from 'react-feather'
+import useClipboard from 'react-use-clipboard'
 
 import AccessModal from './AccessModal'
 
@@ -10,7 +11,9 @@ function Election({
   lastAddedCandidate,
   loadElection,
   addCandidate,
+  manageElectionRole,
 }) {
+  const [isCopied, setCopied] = useClipboard(electionId)
   const [election, updateElection] = useState({})
   const [candidates, updateCandidates] = useState([])
   const [roles, updateRoles] = useState({})
@@ -22,8 +25,15 @@ function Election({
     updateCandidates(electionInfo.candidates)
     updateRoles({
       role: parseInt(electionInfo.role),
-      roleRequest: parseInt(electionInfo.roleRequest),
+      roleRequest: parseInt(electionInfo.roleRequest.role),
+      requestId: electionInfo.roleRequest.id,
     })
+  }
+
+  const handleRoleRequest = (role, cancel) => async () => {
+    console.log({ cancel })
+    await manageElectionRole(electionId, role, cancel)
+    await refreshElection()
   }
 
   useEffect(async () => {
@@ -119,7 +129,10 @@ function Election({
       <div className="w-full p-2 py-3 rounded bg-gray-50 flex flex-row justify-between">
         <div className="flex flex-nowrap items-center">
           <span>{electionIdDisplay}</span>
-          <span className="ml-2 text-gray-800 cursor-pointer">
+          <span
+            className="ml-2 text-gray-800 cursor-pointer"
+            onClick={setCopied}
+          >
             <Copy size={16} />
           </span>
         </div>
@@ -134,6 +147,7 @@ function Election({
         showModal={openAccessOptions}
         closeModal={() => updateOpenAccessOptions(false)}
         roles={roles}
+        handleRoleRequest={handleRoleRequest}
       />
     </div>
   )

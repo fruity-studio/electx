@@ -57,7 +57,7 @@ class web3Helpers {
     this.contractActionsFactory(name, params, true)
 
   createNewElection = async ({ name, description, pollStart, pollEnd }) =>
-    await sendContractWithParams("createElection", [
+    await this.sendContractWithParams("createElection", [
       name,
       description,
       pollStart,
@@ -72,6 +72,24 @@ class web3Helpers {
       manifesto,
       party,
     ])
+  }
+
+  manageElectionRole = async (electionId, role, cancel) => {
+    const roles = {
+      state: "requestStateValidatorRole",
+      zone: "requestZoneValidatorRole",
+      voter: "requestVoterRole",
+    }
+    const requestRole = roles[role]
+    if (requestRole) {
+      return await this.sendContractWithParams(requestRole, [electionId])
+    }
+
+    if (cancel) {
+      return await this.sendContractWithParams("revokeRoleRequest", [
+        electionId,
+      ])
+    }
   }
 
   getCandidates = async (electionId) => {

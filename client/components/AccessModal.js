@@ -1,11 +1,13 @@
+import classnames from 'classnames'
 import { Formik } from 'formik'
 import React from 'react'
 import { UserCheck, UserPlus, Users } from 'react-feather'
 
 import Modal from './Modal'
 
-function AccessModal({ closeModal, roles }) {
-  const { role, roleRequest } = roles
+function AccessModal({ closeModal, roles, handleRoleRequest }) {
+  console.log(roles)
+  const { role, roleRequest, requestId } = roles
   const handleSubmit = async (values, actions) => {
     actions.resetForm()
     closeModal()
@@ -27,10 +29,6 @@ function AccessModal({ closeModal, roles }) {
     return canValidate
   }
 
-  const handleRoleRequest = () => {
-    console.log(`requested`)
-  }
-
   return (
     <div className="p-4 flex flex-1 flex-col">
       <h2 className="mb-3 font-semibold text-xl">Manage Election Access</h2>
@@ -42,39 +40,49 @@ function AccessModal({ closeModal, roles }) {
             <div className="border border-dashed rounded flex flex-col items-center justify-center pt-9 pb-3">
               <Users size={30} />
               <span>State Validator</span>
-              <button
-                disabled={role !== 0 && roleRequest === 0 && roleRequest !== 3}
-                onClick={handleRoleRequest}
-                className="mt-3 py-1 px-4 border-2 mr-2 border-gray-300 hover:border-gray-500 bg-transparent rounded"
-              >
-                {roleRequest === 3 ? "Cancel Request" : "Request"}
-              </button>
+              {(roleRequest === 0 || roleRequest === 3) && (
+                <button
+                  onClick={handleRoleRequest("state", roleRequest === 3)}
+                  className={classnames(
+                    "mt-3 py-1 px-4 border-2 mr-2 self-center border-gray-300 hover:border-gray-500 bg-transparent rounded"
+                  )}
+                >
+                  {roleRequest === 3 ? "Cancel" : "Request"}
+                </button>
+              )}
             </div>
             {/* Zone Validator */}
             <div className="border border-dashed rounded flex flex-col items-center justify-center pt-9 pb-3">
               <UserPlus size={30} />
               <span>Zone Validator</span>
-              <button
-                disabled={role !== 0 && roleRequest === 0 && roleRequest !== 2}
-                onClick={handleRoleRequest}
-                className="mt-3 py-1 px-4 border-2 mr-2 border-gray-300 hover:border-gray-500 bg-transparent rounded"
-              >
-                {roleRequest === 2 ? "Cancel Request" : "Request"}
-              </button>
+              {(roleRequest === 0 || roleRequest === 2) && (
+                <button
+                  onClick={handleRoleRequest("zone", roleRequest === 2)}
+                  className="mt-3 py-1 px-4 border-2 mr-2 border-gray-300 hover:border-gray-500 bg-transparent rounded"
+                >
+                  {roleRequest === 2 ? "Cancel Request" : "Request"}
+                </button>
+              )}
             </div>
             {/* Voter Access */}
             <div className="border border-dashed rounded flex flex-col items-center justify-center pt-9 pb-3">
               <UserCheck size={30} />
               <span>Voter Access</span>
-              <button
-                disabled={role !== 0 && roleRequest === 0 && roleRequest !== 1}
-                onClick={handleRoleRequest}
-                className="mt-3 py-1 px-4 border-2 mr-2 border-gray-300 hover:border-gray-500 bg-transparent rounded"
-              >
-                {roleRequest === 1 ? "Cancel Request" : "Request"}
-              </button>
+              {(roleRequest === 0 || roleRequest === 1) && (
+                <button
+                  onClick={handleRoleRequest("voter", roleRequest === 1)}
+                  className="mt-3 py-1 px-4 border-2 mr-2 border-gray-300 hover:border-gray-500 bg-transparent rounded"
+                >
+                  {roleRequest === 1 ? "Cancel Request" : "Request"}
+                </button>
+              )}
             </div>
           </div>
+          {roleRequest > 0 && (
+            <div className="text-xs p-3 mt-2 flex rounded w-full items-center justify-center bg-gray-50">
+              {requestId}
+            </div>
+          )}
         </div>
       )}
       <div className="flex flex-1 flex-col w-full">

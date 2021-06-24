@@ -13,6 +13,7 @@ contract Vhota is Roles, Candidates {
         uint256 pollStart;
         uint256 pollEnd;
         address creator;
+        mapping(address => bool) voted;
     }
 
     struct ElectionMeta {
@@ -58,6 +59,14 @@ contract Vhota is Roles, Candidates {
         _;
     }
 
+    modifier hasNotVoted(bytes32 _electionId) {
+        require(
+            electionsMap[_electionId].voted[msg.sender] == false,
+            "You have already voted in this election"
+        );
+        _;
+    }
+
     function createElection(
         string memory _name,
         string memory _description,
@@ -66,22 +75,16 @@ contract Vhota is Roles, Candidates {
         uint256 _adminLimit
     ) public returns (bytes32 id) {
         elections += 1;
-        // generate unique ID for election
-        // use ID to setup candidate
-        // use ID to setup voters
-        // set poll start and end date
         id = keccak256(
             abi.encodePacked(_name, _description, msg.sender, elections)
         );
-        electionsMap[id] = Election({
-            id: id,
-            index: elections,
-            name: _name,
-            description: _description,
-            pollStart: start,
-            pollEnd: end,
-            creator: msg.sender
-        });
+        electionsMap[id].id = id;
+        electionsMap[id].index = elections;
+        electionsMap[id].name = _name;
+        electionsMap[id].description = _description;
+        electionsMap[id].pollStart = start;
+        electionsMap[id].pollEnd = end;
+        electionsMap[id].creator = msg.sender;
         electionsList.push(ElectionMeta({creator: msg.sender, id: id}));
         electionsByUsers[msg.sender].push(id);
         // add admin roles as needed
@@ -131,23 +134,11 @@ contract Vhota is Roles, Candidates {
         _addCandidate(electionId, name, manifesto, party);
     }
 
-    // function fetchMyElections()
-    //     public
-    //     view
-    //     returns (bytes32[] memory ownedElections)
-    // {
-    //     ownedElections = electionsByUsers[msg.sender];
-    // }
-
-    // function fetchMyAssociatedElections()
-    //     public
-    //     view
-    //     returns (bytes32[] memory myElections)
-    // {
-    //     myElections = associatedElections[msg.sender];
-    // }
-
-    // fetch candidates
-
-    // addVote
+    function voteElectionCandidate(bytes32 _electionId, bytes32 _candidateId)
+        public
+        hasNotVoted(_electionId)
+    {
+        electionsMap[_electionId].voted[msg.sender] = true;
+        _voteCandidate(_electionId, _candidateId);
+    }
 }

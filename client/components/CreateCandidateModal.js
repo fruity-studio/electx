@@ -5,9 +5,8 @@ import Modal from './Modal'
 
 function CreateCandidateModal({ addNewCandidate, closeModal }) {
   const handleSubmit = async (values, actions) => {
-    console.log(values)
     await addNewCandidate(values)
-    actions.resetForm()
+    actions.resetForm({ name: "", party: "", manifesto: "" })
     closeModal()
   }
 
