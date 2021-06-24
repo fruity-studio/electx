@@ -46,7 +46,7 @@ contract Vhota is Roles, Candidates {
 
     modifier isBeforeElectionStart(bytes32 _electionId) {
         require(
-            electionsMap[_electionId].pollStart > block.timestamp,
+            (electionsMap[_electionId].pollStart / 1000) > block.timestamp,
             "You can't add a candidate to an ongoing election"
         );
         _;
@@ -55,11 +55,11 @@ contract Vhota is Roles, Candidates {
     modifier isWithinPollDate(bytes32 _electionId) {
         uint256 currentTime = block.timestamp;
         require(
-            electionsMap[_electionId].pollStart < currentTime,
+            (electionsMap[_electionId].pollStart / 1000) <= currentTime,
             "The polls are not yet open for this election"
         );
         require(
-            currentTime > electionsMap[_electionId].pollEnd,
+            currentTime <= (electionsMap[_electionId].pollEnd / 1000),
             "The polls have closed for this election"
         );
         _;
@@ -144,14 +144,16 @@ contract Vhota is Roles, Candidates {
         public
         view
         isValidElection(electionId)
-        returns (bool)
+        returns (bool voted, bytes32 candidate)
     {
-        return electionsMap[electionId].voted[msg.sender].voted;
+        voted = electionsMap[electionId].voted[msg.sender].voted;
+        candidate = electionsMap[electionId].voted[msg.sender].candidate;
     }
 
     function voteElectionCandidate(bytes32 _electionId, bytes32 _candidateId)
         public
         hasNotVoted(_electionId)
+        isWithinPollDate(_electionId)
     {
         electionsMap[_electionId].voted[msg.sender] = Vote({
             user: msg.sender,
