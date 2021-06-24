@@ -32,7 +32,6 @@ contract Vhota is Roles, Candidates {
     mapping(bytes32 => Election) electionsMap;
     ElectionMeta[] electionsList;
     mapping(address => bytes32[]) electionsByUsers;
-    // mapping(address => bytes32[]) associatedElections;
 
     event ElectionCreated(bytes32 id, address sender);
 
