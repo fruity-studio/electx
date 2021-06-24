@@ -33,6 +33,17 @@ contract Candidates {
         _;
     }
 
+    modifier candidateIsNotDisqualified(
+        bytes32 electionId,
+        bytes32 candidateId
+    ) {
+        require(
+            _electionCandidates[electionId][candidateId].disqualified == false,
+            "This candidate was disqualified"
+        );
+        _;
+    }
+
     function _addCandidate(
         bytes32 electionId,
         string memory name,
@@ -85,13 +96,17 @@ contract Candidates {
             .disqualified;
     }
 
-    function _voteCandidate(bytes32 electionId, bytes32 candidateId) internal {
+    function _voteCandidate(bytes32 electionId, bytes32 candidateId)
+        internal
+        candidateIsNotDisqualified(electionId, candidateId)
+    {
         _electionCandidates[electionId][candidateId].votes += 1;
     }
 
     function _getCandidateVote(bytes32 electionId, bytes32 candidateId)
         internal
         view
+        isValidCandidate(electionId, candidateId)
         returns (uint256 votes)
     {
         votes = _electionCandidates[electionId][candidateId].votes;
@@ -99,6 +114,7 @@ contract Candidates {
 
     function _disqualifyCandidate(bytes32 electionId, bytes32 candidateId)
         internal
+        isValidCandidate(electionId, candidateId)
     {
         _electionCandidates[electionId][candidateId].disqualified = true;
     }
