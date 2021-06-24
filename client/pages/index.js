@@ -1,9 +1,14 @@
 // import Head from 'next/head'
-import { useEffect, useState } from 'react'
-import { Scrollbars } from 'react-custom-scrollbars'
+import { useEffect, useState } from "react"
+import { Scrollbars } from "react-custom-scrollbars"
 
-import { CreateCandidateModal, CreateElectionModal, Election, ElectionCard } from '../components'
-import storage from '../lib/localstorage'
+import {
+  CreateCandidateModal,
+  CreateElectionModal,
+  Election,
+  ElectionCard,
+} from "../components"
+import storage from "../lib/localstorage"
 
 // import { User } from 'react-feather'
 export default function Home({
@@ -93,7 +98,7 @@ export default function Home({
                     type="text"
                     value={electionInput}
                     onChange={(e) => updateElectionInput(e.target.value)}
-                    placeholder="Election ID..."
+                    placeholder="Poll ID..."
                   />
                   <input
                     className="rounded p-2 px-3 bg-transparent border-2 border-gray-300 hover:border-gray-500"
@@ -126,7 +131,7 @@ export default function Home({
                 className="text-sm w-full py-3 rounded flex items-center justify-center border-2 border-gray-300 hover:border-gray-500"
                 onClick={() => updateElectionModal(true)}
               >
-                Create New Election
+                Create New Poll
               </button>
             </div>
           </div>

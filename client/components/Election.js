@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import Avatar from 'react-avatar'
-import { Scrollbars } from 'react-custom-scrollbars'
-import { Copy, Grid, UserPlus } from 'react-feather'
-import useClipboard from 'react-use-clipboard'
+import React, { useEffect, useState } from "react"
+import Avatar from "react-avatar"
+import { Scrollbars } from "react-custom-scrollbars"
+import { Copy, Grid, UserPlus } from "react-feather"
+import useClipboard from "react-use-clipboard"
 
-import timeUtils from '../lib/timeUtils'
-import AccessModal from './AccessModal'
+import timeUtils from "../lib/timeUtils"
+import AccessModal from "./AccessModal"
 
 function Election({
   electionId,
@@ -54,8 +54,6 @@ function Election({
     }
   }, [electionId, lastAddedCandidate])
 
-  console.log(voteStatus)
-
   const electionIdDisplay = election._id
     ? `#${election._id.substr(0, 6)}...${election._id.substr(-4)}`
     : ""
@@ -65,7 +63,7 @@ function Election({
       <div className="flex flex-1 flex-col w-full h-full items-center justify-center">
         <div className="flex flex-col items-center justify-center">
           <Grid size={30} />
-          <span className="mt-3 text-lg">No Election Selected Yet</span>
+          <span className="mt-3 text-lg">No Poll Selected Yet</span>
         </div>
       </div>
     )
@@ -166,7 +164,7 @@ function Election({
         </div>
         <div className="relative flex flex-nowrap">
           <div onClick={() => updateOpenAccessOptions(true)}>
-            Election Access...
+            Poll Access...
           </div>
         </div>
       </div>

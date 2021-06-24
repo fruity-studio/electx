@@ -1,9 +1,9 @@
-import { Field, Formik } from 'formik'
-import moment from 'moment'
-import React from 'react'
+import { Field, Formik } from "formik"
+import moment from "moment"
+import React from "react"
 
-import DatePicker from './DatePicker'
-import Modal from './Modal'
+import DatePicker from "./DatePicker"
+import Modal from "./Modal"
 
 function CreateElectionModal({ createElection, closeModal }) {
   const handleSubmit = async (values, actions) => {
@@ -23,7 +23,7 @@ function CreateElectionModal({ createElection, closeModal }) {
 
   return (
     <div className="p-4 flex flex-1 flex-col">
-      <h2 className="mb-3 font-semibold text-xl">Create New Election</h2>
+      <h2 className="mb-3 font-semibold text-xl">Create New Poll</h2>
       <Formik
         initialValues={{
           name: "",
@@ -45,7 +45,7 @@ function CreateElectionModal({ createElection, closeModal }) {
                   onChange={props.handleChange}
                   onBlur={props.handleBlur}
                   value={props.values.name}
-                  placeholder="X Election 2023..."
+                  placeholder="X Poll 2023..."
                   className="flex w-full rounded p-3 bg-gray-200"
                 />
               </div>
@@ -66,7 +66,7 @@ function CreateElectionModal({ createElection, closeModal }) {
                   onChange={props.handleChange}
                   onBlur={props.handleBlur}
                   value={props.values.description}
-                  placeholder="Election Description"
+                  placeholder="Poll Description"
                   name="description"
                   rows={5}
                   className="w-full p-3 rounded resize-none bg-gray-200"

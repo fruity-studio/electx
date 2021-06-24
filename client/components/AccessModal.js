@@ -1,9 +1,9 @@
-import classnames from 'classnames'
-import { Formik } from 'formik'
-import React from 'react'
-import { UserCheck, UserPlus, Users } from 'react-feather'
+import classnames from "classnames"
+import { Formik } from "formik"
+import React from "react"
+import { UserCheck, UserPlus, Users } from "react-feather"
 
-import Modal from './Modal'
+import Modal from "./Modal"
 
 function AccessModal({
   closeModal,
@@ -37,7 +37,7 @@ function AccessModal({
 
   return (
     <div className="p-4 flex flex-1 flex-col">
-      <h2 className="mb-3 font-semibold text-xl">Manage Election Access</h2>
+      <h2 className="mb-3 font-semibold text-xl">Manage Poll Access</h2>
       <div className="mb-3 flex flex-1 flex-col w-full">
         <h3 className="text-base mb-2">Request Your Access Level:</h3>
         <div className="grid gap-4 grid-cols-3 w-full text-sm">
