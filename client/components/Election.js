@@ -22,6 +22,7 @@ function Election({
   const [roles, updateRoles] = useState({})
   const [voteStatus, updateVoteStatus] = useState({})
   const [openAccessOptions, updateOpenAccessOptions] = useState(false)
+  const isBeforeElection = timeUtils.isInFuture(election.pollStart)
   const electionIsInProgress = timeUtils.isInProgress(
     election.pollStart,
     election.pollEnd
@@ -53,7 +54,7 @@ function Election({
     }
   }, [electionId, lastAddedCandidate])
 
-  // console.log(voteStatus)
+  console.log(voteStatus)
 
   const electionIdDisplay = election._id
     ? `#${election._id.substr(0, 6)}...${election._id.substr(-4)}`
@@ -136,7 +137,7 @@ function Election({
                 ))}
 
                 {/* Add candidate button for admin */}
-                {roles.role > 3 && (
+                {roles.role > 3 && isBeforeElection && (
                   <div
                     className="border border-dashed rounded flex flex-col items-center justify-center text-gray-600"
                     style={{ minHeight: "244px", width: "32%" }}
