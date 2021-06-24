@@ -5,6 +5,12 @@ import "./subcontracts/Candidates.sol";
 import "./subcontracts/Roles.sol";
 
 contract Vhota is Roles, Candidates {
+    struct Vote {
+        address user;
+        bytes32 candidate;
+        bool voted;
+    }
+
     struct Election {
         bytes32 id;
         uint256 index;
@@ -13,7 +19,7 @@ contract Vhota is Roles, Candidates {
         uint256 pollStart;
         uint256 pollEnd;
         address creator;
-        mapping(address => bool) voted;
+        mapping(address => Vote) voted;
     }
 
     struct ElectionMeta {
@@ -61,7 +67,7 @@ contract Vhota is Roles, Candidates {
 
     modifier hasNotVoted(bytes32 _electionId) {
         require(
-            electionsMap[_electionId].voted[msg.sender] == false,
+            electionsMap[_electionId].voted[msg.sender].voted == false,
             "You have already voted in this election"
         );
         _;
@@ -134,11 +140,24 @@ contract Vhota is Roles, Candidates {
         _addCandidate(electionId, name, manifesto, party);
     }
 
+    function userHasVotedForElection(bytes32 electionId)
+        public
+        view
+        isValidElection(electionId)
+        returns (bool)
+    {
+        return electionsMap[electionId].voted[msg.sender].voted;
+    }
+
     function voteElectionCandidate(bytes32 _electionId, bytes32 _candidateId)
         public
         hasNotVoted(_electionId)
     {
-        electionsMap[_electionId].voted[msg.sender] = true;
+        electionsMap[_electionId].voted[msg.sender] = Vote({
+            user: msg.sender,
+            candidate: _candidateId,
+            voted: true
+        });
         _voteCandidate(_electionId, _candidateId);
     }
 }

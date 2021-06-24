@@ -38,6 +38,12 @@ contract Roles {
         address indexed sender
     );
 
+    event RoleRequestApproved(
+        bytes32 election,
+        bytes32 requestId,
+        address approver
+    );
+
     // modifiers
     modifier isElectionAdmin(bytes32 electionId) {
         require(
@@ -148,6 +154,10 @@ contract Roles {
 
     function revokeRoleRequest(bytes32 electionId) public {
         bytes32 id = _getRequestIdForRole(electionId);
+        require(
+            _roleRequests[electionId][id].user == msg.sender,
+            "You can't revoke a role request you don't have yet."
+        );
         delete _roleRequests[electionId][id];
     }
 
@@ -175,6 +185,7 @@ contract Roles {
             role: userRequest.requestType
         });
         delete _roleRequests[electionId][requestId];
+        emit RoleRequestApproved(electionId, requestId, msg.sender);
     }
 
     function _getRequestIdForRole(bytes32 electionId)
